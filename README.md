@@ -4,6 +4,14 @@
 
 A node package to validate bpmn models, based on the BPMN 2.0 standard.
 
+## Goals
+
+* The validation should focus on proper modeling styles, recommended by literature and authors of BPMN 2.0 publications.
+* It should differentiate between modeling errors (e.g. unsupported combinations) and warnings (e.g. valid but not recommended) 
+* It should be flexible enough to set the rules for validation on each element type on/off/strict/loose
+* It should return a list of objects containing type (error, warning), description (what exactly is not valid), involved elements (ids/names)
+
+
 ## Roadmap
 
 * read bpmn model from input
