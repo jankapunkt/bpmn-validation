@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+- '4'
+- '5'
+- '6'
+- '7'
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.npm
+
+
+
+install:
+  - cd bpmn-validation && npm install
+
+
+script:
+  - npm run test
