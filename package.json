@@ -7,7 +7,7 @@
     "start": "node ./dist/index.js",
     "build": "node build.js",
     "prepublish": "npm run build",
-    "test": "mocha --timeout 15000 --compilers js:babel-core/register --recursive \"tests/**/*.tests.js\"",
+    "test": "mocha --timeout 15000 --compilers js:babel-core/register --recursive \"tests/**/*.tests.js\"  \"lib/**/*.js\"",
     "test:watch": "npm test -- --watch"
   },
   "repository": {
