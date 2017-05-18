@@ -12,7 +12,7 @@ branches:
   - stable
 
 install:
-  - cd bpmn-validation && npm install
+  - npm install
 
 
 script:
