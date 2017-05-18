@@ -84,7 +84,13 @@ const defaultProcess =
  '</bpmndi:BPMNDiagram>' + 
  '</bpmn:definitions>';
 
-describe('Default Validation', function () {
+const falseProcess = '<?xml version="1.0" encoding="UTF-8"?>' +
+	'	<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">' +
+	'	<bpmn:process id="Process_1" isExecutable="false">' +
+	'	</bpmn:process>' +
+	'</bpmn:definitions>';
+
+	describe('Default Validation', function () {
 
 	let validator;
 
@@ -98,7 +104,21 @@ describe('Default Validation', function () {
 			if (err || !result) done(err || new Error("failed: result is " + result));
 
 			assert.isTrue(Array.isArray(result));
-			assert.equal(result.length, 0);
+			const errors = result.filter(function(el){
+				return el.type === "error";
+			});
+			assert.equal(errors.length, 0);
+			done();
+		});
+	});
+
+	it ("throws errors on an empty process", function(done) {
+		validator.validateXmlModel(falseProcess, function (err, result) {
+			if (err || !result) done(err || new Error("failed: result is " + result));
+
+			assert.isTrue(Array.isArray(result));
+			// this needs to have errors!!!!
+			assert.notEqual(result.length, 0);
 			done();
 		});
 	});
@@ -136,7 +156,18 @@ describe('Default Validation Settings', function () {
 	});
 
 	it ("applies new validation settings to the validation", function(){
-		assert.fail("not yet implemented")
+
+		validator.setValidationMode({
+			process:false,
+		});
+
+		validator.validateXmlModel(falseProcess, function (err, result) {
+			if (err || !result) done(err || new Error("failed: result is " + result));
+
+			assert.isTrue(Array.isArray(result));
+			assert.equal(result.length, 0);
+			done();
+		});
 	});
 
 
