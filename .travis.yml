@@ -1,9 +1,17 @@
 sudo: required
 dist: trusty
 
-language: node_js
-# Will use version from .nvmrc
-
+llanguage: node_js
+ node_js:
+   - "4"
+ env:
+   - CXX=g++-4.8
+ addons:
+   apt:
+     sources:
+       - ubuntu-toolchain-r-test
+     packages:
+       - g++-4.8
 
 # safelist
 branches:
