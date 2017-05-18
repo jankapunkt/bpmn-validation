@@ -1,0 +1,39 @@
+{
+  "name": "bpmn-validation",
+  "version": "0.0.1",
+  "description": "A node package to validate bpmn models, based on the BPMN 2.0 standard.",
+  "main": "./dist/main.js",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "build": "node build.js",
+    "prepublish": "npm run build",
+    "test": "mocha --timeout 15000 --compilers js:babel-core/register --recursive \"tests/**/*.tests.js\"",
+    "test:watch": "npm test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jankapunkt/bpmn-validation.git"
+  },
+  "keywords": [
+    "bpmn",
+    "validation"
+  ],
+  "author": "Jan Kuester <jkuester@uni-bremen.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jankapunkt/bpmn-validation/issues"
+  },
+  "homepage": "https://github.com/jankapunkt/bpmn-validation#readme",
+  "dependencies": {
+    "bpmn-moddle": "^0.14.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
