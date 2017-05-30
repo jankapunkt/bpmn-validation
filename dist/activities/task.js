@@ -20,7 +20,11 @@ var TaskValidator = function () {
 	_createClass(TaskValidator, [{
 		key: "validate",
 		value: function validate(source) {
-			throw new Error("not yet implemented");
+			this.validateSource(source);
+
+			var results = new Array();
+			console.log(source);
+			return results;
 		}
 	}]);
 

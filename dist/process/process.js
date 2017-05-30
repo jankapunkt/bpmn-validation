@@ -42,7 +42,6 @@ var ProcessValidator = function (_Validator) {
 			if (idErr) results.push(idErr);
 
 			// should be executable
-			// TODO properties will be in future checked with moddle fromn bpmn.io
 			var execWarn = this.validateProperty(source, "isExecutable", "boolean", true, false);
 			if (execWarn) results.push(execWarn);
 

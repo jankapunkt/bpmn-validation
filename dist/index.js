@@ -50,7 +50,8 @@ var BpmnValidator = function () {
 		// will be extended when it gets
 		// more complex by certain elements
 		this.validation = {
-			process: true
+			process: true,
+			activities: true
 		};
 	}
 
@@ -84,21 +85,49 @@ var BpmnValidator = function () {
 	}, {
 		key: 'validateModdleContext',
 		value: function validateModdleContext(definitions) {
-			var result = [];
+			var results = [];
+
+			// validate process itself
+			// this looks for global rules
+			// regarding all processes
 			var roots = definitions.rootElements;
+			if (this.validation.process) {
+				results = results.concat(this.validateProcesses(roots));
+			}
+
+			// validate activites such as tasks
+			// this looks for activity specific rules
+			if (this.validation.activities) {
+				var activities = roots[0].flowElements.filter(function (el) {
+					return el.$type.indexOf("Task") > -1;
+				});
+				results = results.concat(this.validateActivities(activities));
+			}
+
+			return results;
+		}
+	}, {
+		key: 'validateProcesses',
+		value: function validateProcesses(processes) {
+			var results = [];
+			var pv = new _process2.default();
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
 
 			try {
-				for (var _iterator = roots[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				for (var _iterator = processes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var rootElement = _step.value;
 
-					if (rootElement.$type === 'bpmn:Process' && this.validation.process) {
-						var pv = new _process2.default();
+
+					if (rootElement.$type === 'bpmn:Process') {
 						var processResults = pv.validate(rootElement);
-						result = result.concat(processResults);
-					}
+						results = results.concat(processResults);
+					} else if (rootElement.$type === 'bpmn:Collaboration' && this.validation.collaboration) {
+						// TODO validate collaboration
+					} else {
+							// TODO error if none of these apply but validation of them is set to true
+						}
 				}
 			} catch (err) {
 				_didIteratorError = true;
@@ -111,6 +140,42 @@ var BpmnValidator = function () {
 				} finally {
 					if (_didIteratorError) {
 						throw _iteratorError;
+					}
+				}
+			}
+
+			return results;
+		}
+	}, {
+		key: 'validateActivities',
+		value: function validateActivities(activities) {
+			var av = new _task2.default();
+			var result = [];
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
+
+			try {
+				for (var _iterator2 = activities[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var activity = _step2.value;
+
+					console.log(activity);
+					var activityFindings = av.validate(activity);
+					if (activityFindings.length > 0) {
+						result = result.concat(activityFindings);
+					}
+				}
+			} catch (err) {
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
+					}
+				} finally {
+					if (_didIteratorError2) {
+						throw _iteratorError2;
 					}
 				}
 			}
