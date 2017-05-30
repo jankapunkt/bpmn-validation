@@ -89,9 +89,9 @@ var ProcessValidator = function (_Validator) {
 				}
 			}
 
-			if (!taskFound) results.push(this.error("a process requires at least 1 task"));
-			if (!startFound) results.push(this.error("a process requires at least 1 startevent"));
-			if (!endFound) results.push(this.error("a process requires at least 1 endevent"));
+			if (!taskFound) results.push(this.error("a process requires at least 1 task", source.id));
+			if (!startFound) results.push(this.error("a process requires at least 1 startevent", source.id));
+			if (!endFound) results.push(this.error("a process requires at least 1 endevent", source.id));
 
 			return results;
 		}
