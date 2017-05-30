@@ -68,42 +68,54 @@ var BpmnValidator = function () {
 		key: 'validateXmlModel',
 		value: function validateXmlModel(source, callback) {
 			this.moddle.fromXML(source, function (err, definitions) {
-				if (err || !definitions) callback(err, definitions);
-
-				var result = [];
-				//console.log(definitions);
-				var roots = definitions.rootElements;
-				var _iteratorNormalCompletion = true;
-				var _didIteratorError = false;
-				var _iteratorError = undefined;
-
-				try {
-					for (var _iterator = roots[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-						var rootElement = _step.value;
-
-						if (rootElement.$type === 'bpmn:Process' && this.validation.process) {
-							var pv = new _process2.default();
-							var processResults = pv.validate(rootElement);
-							result = result.concat(processResults);
-						}
-					}
-				} catch (err) {
-					_didIteratorError = true;
-					_iteratorError = err;
-				} finally {
-					try {
-						if (!_iteratorNormalCompletion && _iterator.return) {
-							_iterator.return();
-						}
-					} finally {
-						if (_didIteratorError) {
-							throw _iteratorError;
-						}
-					}
+				if (err || !definitions) {
+					callback(err, definitions);
+					return;
 				}
-
+				var result = [];
+				try {
+					result = this.validateModdleContext(definitions);
+				} catch (validationErr) {
+					callback(validationErr, definitions);
+				}
 				callback(null, result);
 			}.bind(this));
+		}
+	}, {
+		key: 'validateModdleContext',
+		value: function validateModdleContext(definitions) {
+			var result = [];
+			var roots = definitions.rootElements;
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = roots[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var rootElement = _step.value;
+
+					if (rootElement.$type === 'bpmn:Process' && this.validation.process) {
+						var pv = new _process2.default();
+						var processResults = pv.validate(rootElement);
+						result = result.concat(processResults);
+					}
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			return result;
 		}
 	}, {
 		key: 'validateJsonModel',
